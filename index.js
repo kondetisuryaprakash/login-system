@@ -1,14 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const path = require('path');
+
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // Use dynamic port for deployment
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(__dirname)); // so browser can open HTML pages
+app.use(express.static(path.join(__dirname, 'public')));
 
-const usersFile = './users.json'; // file to store user data
+
+const usersFile = path.join(__dirname, 'users.json');
 
 // REGISTER endpoint
 app.post('/register', (req, res) => {
@@ -41,7 +44,7 @@ app.post('/login', (req, res) => {
   }
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
+

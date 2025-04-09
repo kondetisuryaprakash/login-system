@@ -43,6 +43,17 @@
       margin-bottom: 15px;
     }
 
+    .gender-group {
+      margin-top: -5px;
+      margin-bottom: 15px;
+    }
+
+    .gender-options {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+    }
+
     button {
       width: 100%;
       padding: 10px;
@@ -78,6 +89,15 @@
       <label for="email">Email</label>
       <input type="email" id="email" name="email" required />
 
+      <label for="gender">Gender</label>
+      <div class="gender-group">
+        <div class="gender-options">
+          <label><input type="radio" name="gender" value="Male" required> Male</label>
+          <label><input type="radio" name="gender" value="Female" required> Female</label>
+          <label><input type="radio" name="gender" value="Other" required> Other</label>
+        </div>
+      </div>
+
       <label for="password">Password</label>
       <input type="password" id="password" name="password" required minlength="6" />
 
@@ -92,27 +112,27 @@
   <script>
     document.getElementById("registrationForm").addEventListener("submit", function (e) {
       e.preventDefault();
-  
+
       const fullName = document.getElementById("fullname").value.trim();
       const phone = document.getElementById("phone").value.trim();
       const email = document.getElementById("email").value.trim();
+      const gender = document.querySelector("input[name='gender']:checked")?.value;
       const password = document.getElementById("password").value;
       const confirmPassword = document.getElementById("confirmPassword").value;
       const message = document.getElementById("message");
-  
+
       if (!/^\d{10}$/.test(phone)) {
         message.textContent = "Please enter a valid 10-digit phone number.";
         message.style.color = "red";
         return;
       }
-  
+
       if (password !== confirmPassword) {
         message.textContent = "Passwords do not match!";
         message.style.color = "red";
         return;
       }
-  
-      // Send data to backend
+
       fetch("/register", {
         method: "POST",
         headers: {
@@ -122,20 +142,20 @@
           fullname: fullName,
           phone,
           email,
+          gender,
           password,
         }),
       })
         .then((res) => {
           if (res.ok) {
-  message.style.color = "green";
-  message.textContent = `Welcome, ${fullName}! Registration successful. Redirecting to login...`;
-  document.getElementById("registrationForm").reset();
-  
-  setTimeout(() => {
-    window.location.href = "exp16.html"; // redirect to login page
-  }, 2000); // wait 2 seconds
-}
- else {
+            message.style.color = "green";
+            message.textContent = `Welcome, ${fullName}! Registration successful. Redirecting to login...`;
+            document.getElementById("registrationForm").reset();
+
+            setTimeout(() => {
+              window.location.href = "exp16.html"; // redirect to login page
+            }, 2000);
+          } else {
             return res.text().then((text) => {
               message.style.color = "red";
               message.textContent = text;
@@ -148,6 +168,6 @@
         });
     });
   </script>
-  
+
 </body>
 </html>

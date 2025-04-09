@@ -127,10 +127,15 @@
       })
         .then((res) => {
           if (res.ok) {
-            message.style.color = "green";
-            message.textContent = `Welcome, ${fullName}! Registration successful.`;
-            document.getElementById("registrationForm").reset();
-          } else {
+  message.style.color = "green";
+  message.textContent = `Welcome, ${fullName}! Registration successful. Redirecting to login...`;
+  document.getElementById("registrationForm").reset();
+  
+  setTimeout(() => {
+    window.location.href = "exp16.html"; // redirect to login page
+  }, 2000); // wait 2 seconds
+}
+ else {
             return res.text().then((text) => {
               message.style.color = "red";
               message.textContent = text;
